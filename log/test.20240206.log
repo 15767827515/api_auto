@@ -1,0 +1,47 @@
+INFO - 2024-02-06 17:23:37,701 - extract_control.py:37 -[extract_control:extract_data] - 提取接口的返回值：
+ERROR - 2024-02-06 17:23:58,833 - extract_control.py:43 -[extract_control:extract_data] - 'NoneType' object has no attribute 'group'
+ERROR - 2024-02-06 17:25:34,440 - extract_control.py:43 -[extract_control:extract_data] - 'NoneType' object has no attribute 'group'
+ERROR - 2024-02-06 17:25:45,815 - extract_control.py:43 -[extract_control:extract_data] - 'NoneType' object has no attribute 'group'
+ERROR - 2024-02-06 17:26:19,200 - extract_control.py:43 -[extract_control:extract_data] - 'NoneType' object has no attribute 'group'
+ERROR - 2024-02-06 17:26:50,754 - extract_control.py:43 -[extract_control:extract_data] - 'NoneType' object has no attribute 'group'
+ERROR - 2024-02-06 17:27:09,215 - extract_control.py:43 -[extract_control:extract_data] - 'NoneType' object has no attribute 'group'
+ERROR - 2024-02-06 17:28:00,210 - extract_control.py:43 -[extract_control:extract_data] - 'NoneType' object has no attribute 'group'
+INFO - 2024-02-06 17:28:20,841 - extract_control.py:37 -[extract_control:extract_data] - 提取接口的返回值：
+INFO - 2024-02-06 17:28:54,669 - extract_control.py:37 -[extract_control:extract_data] - 提取接口的返回值：
+INFO - 2024-02-06 17:29:57,426 - extract_control.py:37 -[extract_control:extract_data] - 提取接口的返回值：{'token': 'aD2EFABD3DC2d2Aa361c87bdcaAba'}
+INFO - 2024-02-06 17:40:17,644 - extract_control.py:30 -[extract_control:extract_data] - 提取接口的返回值：{'orgId': '啊啊啊aD2EFABD3DC2d2Aa361c87bdcaAba啊啊啊'}
+INFO - 2024-02-06 17:40:38,609 - extract_control.py:30 -[extract_control:extract_data] - 提取接口的返回值：{'token': '啊啊啊aD2EFABD3DC2d2Aa361c87bdcaAba啊啊啊'}
+INFO - 2024-02-06 17:43:47,281 - request_control.py:17 -[request_control:run_main] - 接口名称：用户登录
+INFO - 2024-02-06 17:43:47,281 - request_control.py:18 -[request_control:run_main] - 接口请求地址：http://127.0.0.1:8787/dar/user/login
+INFO - 2024-02-06 17:43:47,281 - request_control.py:19 -[request_control:run_main] - 测试用例名称：用户名和密码正确登录验证
+INFO - 2024-02-06 17:43:47,282 - request_control.py:20 -[request_control:run_main] - 请求头：{'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'}
+INFO - 2024-02-06 17:43:47,282 - request_control.py:21 -[request_control:run_main] - cookies：None
+INFO - 2024-02-06 17:43:47,282 - request_control.py:23 -[request_control:run_main] - 请求参数：{'data': {'user_name': 'test01', 'passwd': 'admin123'}}
+INFO - 2024-02-06 17:44:04,730 - request_control.py:17 -[request_control:run_main] - 接口名称：用户登录
+INFO - 2024-02-06 17:44:04,730 - request_control.py:18 -[request_control:run_main] - 接口请求地址：http://127.0.0.1:8787/dar/user/login
+INFO - 2024-02-06 17:44:04,730 - request_control.py:19 -[request_control:run_main] - 测试用例名称：用户名和密码正确登录验证
+INFO - 2024-02-06 17:44:04,731 - request_control.py:20 -[request_control:run_main] - 请求头：{'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'}
+INFO - 2024-02-06 17:44:04,731 - request_control.py:21 -[request_control:run_main] - cookies：None
+INFO - 2024-02-06 17:44:04,731 - request_control.py:23 -[request_control:run_main] - 请求参数：{'data': {'user_name': 'test01', 'passwd': 'admin123'}}
+INFO - 2024-02-06 17:48:47,982 - request_control.py:18 -[request_control:run_main] - 接口名称：用户登录
+INFO - 2024-02-06 17:48:47,982 - request_control.py:19 -[request_control:run_main] - 接口请求地址：http://127.0.0.1:8787/dar/user/login
+INFO - 2024-02-06 17:48:47,984 - request_control.py:20 -[request_control:run_main] - 测试用例名称：用户名和密码正确登录验证
+INFO - 2024-02-06 17:48:47,984 - request_control.py:21 -[request_control:run_main] - 请求头：{'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'}
+INFO - 2024-02-06 17:48:47,984 - request_control.py:22 -[request_control:run_main] - cookies：None
+INFO - 2024-02-06 17:48:47,984 - request_control.py:24 -[request_control:run_main] - 请求参数：{'data': {'user_name': 'test01', 'passwd': 'admin123'}}
+INFO - 2024-02-06 17:48:57,420 - request_control.py:18 -[request_control:run_main] - 接口名称：用户登录
+INFO - 2024-02-06 17:48:57,421 - request_control.py:19 -[request_control:run_main] - 接口请求地址：http://127.0.0.1:8787/dar/user/login
+INFO - 2024-02-06 17:48:57,421 - request_control.py:20 -[request_control:run_main] - 测试用例名称：用户名和密码正确登录验证
+INFO - 2024-02-06 17:48:57,421 - request_control.py:21 -[request_control:run_main] - 请求头：{'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'}
+INFO - 2024-02-06 17:48:57,421 - request_control.py:22 -[request_control:run_main] - cookies：None
+INFO - 2024-02-06 17:48:57,422 - request_control.py:24 -[request_control:run_main] - 请求参数：{'data': {'user_name': 'test01', 'passwd': 'admin123'}}
+INFO - 2024-02-06 17:48:57,428 - extract_control.py:37 -[extract_control:extract_data] - 提取接口的返回值：{'token': 'C2bC1f1A83bCea851d0DDDA81cfF8'}
+INFO - 2024-02-06 17:48:57,429 - extract_control.py:37 -[extract_control:extract_data] - 提取接口的返回值：{'userId': '2013060194418209567'}
+INFO - 2024-02-06 17:50:55,817 - request_control.py:18 -[request_control:run_main] - 接口名称：用户登录
+INFO - 2024-02-06 17:50:55,818 - request_control.py:19 -[request_control:run_main] - 接口请求地址：http://127.0.0.1:8787/dar/user/login
+INFO - 2024-02-06 17:50:55,818 - request_control.py:20 -[request_control:run_main] - 测试用例名称：用户名和密码正确登录验证
+INFO - 2024-02-06 17:50:55,818 - request_control.py:21 -[request_control:run_main] - 请求头：{'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'}
+INFO - 2024-02-06 17:50:55,818 - request_control.py:22 -[request_control:run_main] - cookies：None
+INFO - 2024-02-06 17:50:55,819 - request_control.py:24 -[request_control:run_main] - 请求参数：{'data': {'user_name': 'test01', 'passwd': 'admin123'}}
+INFO - 2024-02-06 17:50:55,826 - extract_control.py:37 -[extract_control:extract_data] - 提取接口的返回值：{'token': 'B1C7beFba8AD5cF5e18f97c4bbDB9'}
+INFO - 2024-02-06 17:50:55,826 - extract_control.py:37 -[extract_control:extract_data] - 提取接口的返回值：{'userId': '2013060194418209567'}
