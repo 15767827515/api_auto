@@ -3,8 +3,41 @@ import json
 import jsonpath
 import yaml
 from config.setting import extract_yanl_path
+from utils.debugtalk import DebugTalk
 from utils.recordlog import logs
 import re
+
+
+def repleace_util(data):
+    '''
+    """yaml数据替换解析"""
+    :param data:
+    :return:
+    '''
+    str_data = data
+    if not isinstance(data, str):
+        str_data = json.dumps(data)
+    for i in range(str_data.count("${")):
+        if '${' in str_data and '}' in str_data:
+            start_index = str_data.index('$')
+            end_index = str_data.index("}", start_index)
+            # 提取包含函数名和参数的字符串
+            full_expression = str_data[start_index:end_index + 1]
+            # 取出yaml文件的函数名
+            func_name = full_expression[2:full_expression.index("(")]
+            # 提取函数参数
+            func_params = full_expression[full_expression.index("(") + 1:full_expression.index(")")]
+            # 使用 getattr 调用 DebugTalk 类中的方法，传递函数参数
+            extract_data = getattr(DebugTalk(), func_name)(*func_params.split(",") if func_params else "")
+            if extract_data and isinstance(extract_data, list):
+                extract_data=(",").join(i for i in extract_data)
+            # 字符串replace需要重新赋值给str_data
+            str_data=str_data.replace(full_expression,str(extract_data))
+    if data and isinstance(data, dict):
+        data = json.loads(str_data)
+    else:
+        data = str_data
+    return data
 
 
 def extract_data(testdata_extract_expression, response):
@@ -62,11 +95,11 @@ def write_extract_yaml(data, extract_yanl_path=extract_yanl_path):
 
 
 if __name__ == '__main__':
-    exp = {"token": "'token': '(.*?)'"}
-    response = r"{'orgId': '4140913758110176843','token': '啊啊啊aD2EFABD3DC2d2Aa361c87bdcaAba啊啊啊'}"
-    print(extract_data(exp, response))
-
+    # exp = {"token": "'token': '(.*?)'"}
+    # response = r"{'orgId': '4140913758110176843','token': '啊啊啊aD2EFABD3DC2d2Aa361c87bdcaAba啊啊啊'}"
+    # print(extract_data(exp, response))
 
     # exp = {"token": "$.token"}
     # response = {"token": "aD2EFABD3DC2d2Aa361c87bdcaAba"}
     # print(extract_data(exp, response))
+    print(repleace_util("user_name: ${get_extract_var(userId)}"))

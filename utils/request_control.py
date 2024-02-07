@@ -2,7 +2,7 @@ import json
 
 import requests
 
-from utils.extract_control import extract_data
+from utils.extract_control import extract_data, repleace_util
 from utils.recordlog import logs
 
 
@@ -40,18 +40,25 @@ class RequestBase:
         url = r"http://127.0.0.1:8787" + baseinfo["url"]
         method = baseinfo["method"]
         header = baseinfo["header"]
+        extract=None
         if "case_name" in testdata.keys():
-            case_name = testdata.pop('case_name')
+            case_name = repleace_util(testdata.pop('case_name'))
         if "assertion" in testdata.keys():
             assertion = testdata.pop('assertion')
         if "extract" in testdata.keys():
-            extract = testdata.pop('extract')
+            extract = repleace_util(testdata.pop('extract'))
+
+        for key, value in testdata.items():
+            testdata[key] = repleace_util(value)
 
         result = self.run_main(name=api_name, url=url, case_name=case_name, header=header, method=method, cookies=None,
                                file=None, **testdata).json()
 
         if extract:
             extract_data(extract, result)
+
+
+
 
     def md5_encry(self):
         pass

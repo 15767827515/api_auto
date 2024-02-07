@@ -17,5 +17,5 @@
         orgId: "'token': '(.*?)'"
     - case_name: 用户名和密码错误
       data:
-        user_name: ${get_params()}
+        user_name: ${get_extract_var(userId)}
         passwd: admin12344
