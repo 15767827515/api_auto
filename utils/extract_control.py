@@ -8,13 +8,14 @@ from utils.recordlog import logs
 import re
 
 
-def repleace_util(data):
+def replace_util(data):
     '''
     """yaml数据替换解析"""
     :param data:
     :return:
     '''
     str_data = data
+    logs.info('替换前的数据：{}'.format(data))
     if not isinstance(data, str):
         str_data = json.dumps(data)
     for i in range(str_data.count("${")):
@@ -35,8 +36,10 @@ def repleace_util(data):
             str_data=str_data.replace(full_expression,str(extract_data))
     if data and isinstance(data, dict):
         data = json.loads(str_data)
+        logs.info('替换后的数据：{}'.format(data))
     else:
         data = str_data
+        logs.info('替换后的数据：{}'.format(data))
     return data
 
 
@@ -102,4 +105,4 @@ if __name__ == '__main__':
     # exp = {"token": "$.token"}
     # response = {"token": "aD2EFABD3DC2d2Aa361c87bdcaAba"}
     # print(extract_data(exp, response))
-    print(repleace_util("user_name: ${get_extract_var(userId)}"))
+    print(replace_util("user_name: ${get_extract_var(userId)}"))

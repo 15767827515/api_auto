@@ -60,6 +60,7 @@ class RequestBase:
 
 
 
+
     def md5_encry(self):
         pass
 

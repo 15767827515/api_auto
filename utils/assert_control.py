@@ -1,0 +1,80 @@
+import json
+import operator
+
+from filecmp import cmp
+
+from jsonpath import jsonpath
+
+from utils.recordlog import logs
+
+
+class assertion:
+
+    def contain_assert(self, expected, response, status_code):
+        assert_flag = 0
+
+        for k, v in expected.items():
+            if k == "status_code":
+                if v != status_code:
+                    assert_flag += 1
+            else:
+                response_list = jsonpath(response, f"$..{k}")
+                if response_list:
+                    response_list = "".join(response_list)
+                    if v in response_list:
+                        logs.info("字符串包含断言成功：预期结果-->%s；实际结果-->%s" % (expected, response))
+                    else:
+                        assert_flag += 1
+                        logs.error("字符串包含断言失败：预期结果-->%s；实际结果-->%s" % (expected, response))
+                else:
+                    assert_flag += 1
+                    logs.error("从接口相应中提取不到对应的断言内容，请检查断言字段是否包含在接口返回的内容中" )
+
+        return assert_flag
+
+    def equal_assert(self, expected, response):
+        assert_flag = 0
+        result = None
+        if isinstance(expected, dict) and isinstance(response, dict):
+            result = (operator.eq(expected, response))
+            if result:
+                logs.info(f"相等断言成功：接口实际结果{response}，等于预期结果：" + str(expected))
+            else:
+                assert_flag += 1
+                logs.error(f"相等断言失败：接口实际结果{response}，不等于预期结果：" + str(expected))
+
+        return assert_flag
+
+    def assert_result(self, expected, response, status_code=200):
+        all_assert_flag = 0
+        try:
+            for yq in expected:
+                for k, v in yq.items():
+                    if k == "contains":
+                        all_assert_flag = all_assert_flag + self.contain_assert(eval(v), response, status_code)
+                    elif k == "equals":
+                        all_assert_flag = all_assert_flag + self.equal_assert(eval(v), response)
+        except Exception as e:
+            logs.info("请检查断言字段是否包含在接口返回的内容中")
+            logs.info(f"异常信息:{e}")
+            raise e
+
+        if all_assert_flag == 0:
+            logs.info('断言正常，测试成功')
+            assert True
+        if all_assert_flag == 1:
+            logs.error('断言错误，测试失败')
+            assert False
+
+
+if __name__ == '__main__':
+    assertion = assertion()
+    expected1 = [{"contains": "{'msg': '登录成功'}"}]
+    response1 = {'error_code': None, 'msg': '登录成功', 'msg_code': 200, 'orgId': '4140913758110176843',
+                'token': '6FCB5A3a360D08445B9Ae0B41CEbf', 'userId': '2013060194418209567'}
+    # print(assertion.contain_assert(expected, response,200))
+    expected2 = [{"equals": "{'msg2': '登录成功'}"}]
+    response2 = {'msg': '登录成功'}
+    assertion.assert_result(expected1, response1)
+    assertion.assert_result(expected2, response2)
+
