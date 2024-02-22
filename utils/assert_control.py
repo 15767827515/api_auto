@@ -9,7 +9,7 @@ from utils.connect_DB import SqlserverConnect
 from utils.recordlog import logs
 
 
-class assertion:
+class AssertionMangement:
 
     def contain_assert(self, expected, response, status_code):
         assert_flag = 0
@@ -75,17 +75,16 @@ class assertion:
             logs.error(f"SQL断言失败，异常信息：{e}")
         return assert_flag
 
-    def assert_result(self, expected, response, status_code=200):
+    def assert_result(self, expected: list, response: dict, status_code=200):
         all_assert_flag = 0
         try:
             for yq in expected:
                 for k, v in yq.items():
                     if k == "contains":
-                        all_assert_flag = all_assert_flag + self.contain_assert(eval(v), response, status_code)
+                        all_assert_flag = all_assert_flag + self.contain_assert(v, response, status_code)
                     elif k == "equals":
-                        all_assert_flag = all_assert_flag + self.equal_assert(eval(v), response)
+                        all_assert_flag = all_assert_flag + self.equal_assert(v, response)
                     elif k == "sql":
-                        print(k, v, type(v))
                         all_assert_flag = all_assert_flag + self.db_assert(json.loads(v), response)
         except Exception as e:
             logs.info("请检查断言字段是否包含在接口返回的内容中")
@@ -101,7 +100,7 @@ class assertion:
 
 
 if __name__ == '__main__':
-    assertion = assertion()
+    assertion = AssertionMangement()
     sql = [{
         "sql": "{\" select 开票机号 from 销项发票 where 发票GUID='3d980d9f-6cb4-407c-89d1-86030be8fe98' \": \"msg_code\"}"
     }

@@ -9,8 +9,15 @@ from utils.recordlog import logs
 class DebugTalk:
 
 
+    def get_authorization(self,extract_yaml_file=extract_yanl_path):
+        try:
+            with open(extract_yaml_file, "r", encoding="utf-8") as f:
+                data = yaml.safe_load(f)
+                authorization="Bearer"+" "+data["token"]
+            return authorization
 
-
+        except Exception as e:
+            logs.info(e)
 
     def get_extract_var(self,var_key, index=None, extract_yaml_file=extract_yanl_path):
         '''

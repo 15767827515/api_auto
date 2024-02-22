@@ -3,13 +3,16 @@
     url: /prod-api/crmContract/contract/attachment/upload
     method: post
     header:
-      Content-Type: multipart/form-data; boundary
-      Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJsb2dpbl91c2VyX2tleSI6IjZjOTc2MzYzLTFlOTktNDVlOC1hNTgwLTk2OGRlYTY4NjhkYyJ9.8IQFTHaczyYSLKv1PIq-9m2p8RZP4NHEoGHC5qdpKU-lv05R2F7O6rL7eZLGBCTDsFy4VOOG5KxrrqrloBnz_w
+      Authorization: ${get_authorization()}
   testCase:
     - case_name: 上传excel文件
       data:
         contractId: 8b2e1d7733a340a4ab6b367809bf64d3
       file:
-        files: ../../data/Test.xls
-
+        files: ./data/Test.xls
+      assertion:
+        - contains: {"msg":"上传成功"}
+      extract:
+        - id: $..id
+        - code: "{'code': (.*?), 'msg':"
 
