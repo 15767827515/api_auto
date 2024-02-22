@@ -1,3 +1,4 @@
+import allure
 import pytest
 
 from config.setting import ROOT_PATH
@@ -5,6 +6,8 @@ from utils.request_control import RequestBase
 from utils.yaml_control import read_test_yaml
 
 
+
+@allure.feature("合同文件上传模块")
 class TestUploadfile:
 
     @pytest.mark.parametrize(('baseinfo,testdata'),

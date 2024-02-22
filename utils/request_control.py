@@ -1,5 +1,6 @@
 import json
 
+import allure
 import pytest
 import requests
 
@@ -42,32 +43,45 @@ class RequestBase:
         '''
         try:
             api_name = baseinfo["api_name"]
+            allure.attach(api_name,f"接口测试的api名字是{api_name}",attachment_type=allure.attachment_type.TEXT)
+            allure.story(api_name)
             url = ConfigParser.get_envi_api("host") + baseinfo["url"]
+            allure.attach(url, f"接口测试的url是{url}", attachment_type=allure.attachment_type.TEXT)
+
             method = baseinfo["method"]
+            allure.attach(method, f"接口测试的请求方法是{method}", attachment_type=allure.attachment_type.TEXT)
+
             header = baseinfo["header"]
             if header is not None:
                 header = replace_util(header)
+            allure.attach(json.dumps(header), f"接口测试的header是{json.dumps(header)}", attachment_type=allure.attachment_type.TEXT)
+
             # 提取测试用例名字
             case_name = replace_util(testdata.pop('case_name', None))
+            allure.attach(case_name, f"接口测试的用例名称是{case_name}", attachment_type=allure.attachment_type.TEXT)
 
             # 提取断言
             assertion = testdata.pop('assertion', None)
+            allure.attach(json.dumps(assertion), f"接口测试的断言表达式是{json.dumps(assertion)}", attachment_type=allure.attachment_type.TEXT)
 
             # 处理变量提取
             extract = testdata.pop('extract', None)
             extract_list = testdata.pop('extract_list', None)
+            allure.attach(json.dumps(extract), f"接口测试需要提取的变量是是{json.dumps(extract)}", attachment_type=allure.attachment_type.TEXT)
 
             # 处理文件上传
             file, files = testdata.pop('file', None), None
             if file is not None:
                 for fk, fv in file.items():
                     files = {fk: open(fv, mode='rb')}
+            allure.attach(json.dumps(file), f"接口测试的需要上传的文件路径是{json.dumps(file)}", attachment_type=allure.attachment_type.TEXT)
 
             params_type = ['data', 'json', 'params']
             # 处理请求传参
             for key, value in testdata.items():
                 if key in params_type:
                     testdata[key] = replace_util(value)
+            allure.attach(json.dumps(testdata), f"接口测试的请求数据是{json.dumps(testdata)}", attachment_type=allure.attachment_type.TEXT)
 
             result = self.run_main(name=api_name, url=url, case_name=case_name, header=header, method=method,
                                    cookies=None,
