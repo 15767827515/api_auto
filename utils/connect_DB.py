@@ -106,6 +106,10 @@ class MysqlConnect:
 if __name__ == '__main__':
     sql = "select * from 销项发票 where 发票GUID='3d980d9f-6cb4-407c-89d1-86030be8fe98'"
     print(SqlserverConnect().query(sql, "one"))
-    sql2= "update  销项发票 set 发票种类='p' where 发票GUID='3d980d9f-6cb4-407c-89d1-86030be8fe98'"
+    sql2= "update  销项发票 set 开票机号=200 where 发票GUID='3d980d9f-6cb4-407c-89d1-86030be8fe98'"
     print(SqlserverConnect().execute(sql2))
     print(SqlserverConnect().query(sql, "one"))
+
+    sql3="select 开票机号 from 销项发票 where 发票GUID='3d980d9f-6cb4-407c-89d1-86030be8fe98'"
+
+    print(SqlserverConnect().query(sql3))

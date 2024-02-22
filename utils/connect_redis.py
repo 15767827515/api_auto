@@ -1,5 +1,9 @@
 import redis
 
+# from rediscluster import RedisCluster
+
+
+
 from utils.read_config import ConfigParser
 from utils.recordlog import logs
 
@@ -13,35 +17,52 @@ class ConnnectRedis:
             "username": ConfigParser.get_redis_options("username"),
             "password": ConfigParser.get_redis_options("password"),
             "db": ConfigParser.get_redis_options("db"),
-            "decode_responses" : True
+            "decode_responses": True
         }
 
-        self.connection_pool=redis.ConnectionPool(**self.connect_info)
-        self.con=redis.Redis(connection_pool=self.connection_pool)
+        startup_nodes_str=ConfigParser.get_redis_options("startup_nodes")
+        self.nodes_list = []
+        try:
+            if startup_nodes_str:
+                startup_nodes_list=startup_nodes_str.split(";")
+                host, port=None,None
+                for node in startup_nodes_list:
+                    host,port=node.split(":")
+                    self.nodes_list.append({"host":host,"port":port})
+                self.con=RedisCluster(startup_nodes=self.nodes_list)
+            elif self.connect_info['host'] and self.connect_info['port']:
+                self.con = redis.StrictRedis(**self.connect_info)
+        except Exception as e:
+            logs.error(e)
 
 
-    def get(self,key):
+
+    def get(self, key):
         '''
         根据key获取Redis的值
         :param key:
         :return:
         '''
         try:
-            result=self.con.get(key)
-            if isinstance(result,bytes):
+            result = self.con.get(key)
+            if isinstance(result, bytes):
                 return result.decode("utf-8")
             return result
         except Exception as e:
             logs.error(f'Redis Error：{e}')
 
-    def set(self,key,value,ex=None):
+    def set(self, key, value, ex=None):
         try:
-            self.con.set(key,value,ex=ex)
+            self.con.set(key, value, ex=ex)
         except Exception as e:
             logs.error(f'Redis Error：{e}')
 
 
 if __name__ == '__main__':
     print(ConnnectRedis().get("identifys"))
-    ConnnectRedis().set("identifys",2222)
+    ConnnectRedis().set("identifys", 2222)
     print(ConnnectRedis().get("identifys"))
+
+
+
+

@@ -67,6 +67,15 @@ class ConfigControl:
         result=self.get_specific_options(section="REDIS",name=name)
         return result
 
+    def get_envi_api(self,name):
+        '''
+        读取配置文件中环境api的信息
+        :param name:
+        :return:
+        '''
+        result = self.get_specific_options(section="envi_api", name=name)
+        return result
+
 ConfigParser=ConfigControl()
 
 if __name__ == '__main__':
