@@ -76,6 +76,10 @@ class ConfigControl:
         result = self.get_specific_options(section="envi_api", name=name)
         return result
 
+    def get_rsa_public_key(self,name):
+        result = self.get_specific_options(section="RSA", name=name)
+        return result
+
 ConfigParser=ConfigControl()
 
 if __name__ == '__main__':

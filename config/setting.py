@@ -9,5 +9,9 @@ extract_yanl_path=os.path.join(ROOT_PATH,"extract_var.yaml")
 # 配置文件ini的路径
 config_path=os.path.join(os.path.join(ROOT_PATH,"config"),"config.ini")
 
+# 公钥文件public_key.pem路径
+public_key_path=os.path.join(ROOT_PATH,"public_key.pem")
+
 
 # print(config_path)
+# print(public_key_path)
