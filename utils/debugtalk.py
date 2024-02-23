@@ -5,12 +5,14 @@ import os
 import random
 import rsa
 import yaml
-from cryptography.hazmat.backends import default_backend
-from cryptography.hazmat.primitives import serialization
+# from crypto.Cipher import PKCS1_v1_5
+# from crypto.PublicKey import RSA
 
 from config.setting import extract_yanl_path, ROOT_PATH, public_key_path
 from utils.read_config import ConfigControl
 from utils.recordlog import logs
+
+import base64
 
 
 class DebugTalk:
@@ -88,20 +90,27 @@ class DebugTalk:
         sha256_data = hashlib.sha256(str(data).encode()).hexdigest()
         return sha256_data
 
+    def RSA_encryption(self, data: str,public_path=public_key_path):
+        try:
+            with open(public_path) as f:
+                jk=f.read()
+        except Exception as e:
+            logs.error(e)
+        pubkey = rsa.PublicKey.load_pkcs1_openssl_pem(jk.encode())
+        data_byts = rsa.encrypt(data.encode(), pubkey)
+        rsa_data=base64.b64encode(data_byts).decode()
+        return rsa_data
 
 
-    def RSA_encryption(self, data):
-        with open(public_key_path,"rb") as f:
-            data = f.read()
-            print(data,type(data))
-            public_key = rsa.PublicKey.load_pkcs1(data)
-        ras_data = rsa.encrypt(str(data).encode(), public_key)
-        return ras_data
+
+
+
 
 
 if __name__ == '__main__':
     # print(DebugTalk().get_extract_var("orgId", 0))
     data = "V{Fc~39m"
+
 
     # print(random.choice(['A5DBa8CdFabEdfC06FDbE5AC4aF87', 'A5DBa8CdFabEdfC06FDbE5AC4aF872', 'A5DBa8CdFabEdfC06FDbE5AC4aF87']))
     # print(DebugTalk().get_now_date())
@@ -110,4 +119,5 @@ if __name__ == '__main__':
     # print(DebugTalk().sha1_encryption(data))
     # print(DebugTalk().sha256_encryption(data))
     print(DebugTalk().RSA_encryption(data))
-    # print(DebugTalk().get_rsa_publickey())
+
+
