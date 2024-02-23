@@ -8,6 +8,7 @@ import requests
 from config.setting import ROOT_PATH
 from utils.assert_control import AssertionMangement
 from utils.extract_control import extract_data, replace_util, write_extract_yaml
+from utils.generate_case_id import module_id, interface_id, case_id
 from utils.read_config import ConfigParser
 from utils.recordlog import logs
 from utils.yaml_control import read_test_yaml
@@ -51,7 +52,7 @@ class RequestBase:
                                    verify=False, **kwargs)
         return result
 
-    def request_base(self, baseinfo, testdata):
+    def request_base(self, baseinfo: dict, testdata: dict):
         '''
 
         :param baseinfo:
@@ -59,14 +60,22 @@ class RequestBase:
         :return:
         '''
         try:
+            feature_name=baseinfo["feature_name"]
+            allure.dynamic.feature(feature_name)
+
             api_name = baseinfo["api_name"]
+            allure.dynamic.story(next(interface_id)+api_name)
             allure.attach(api_name, f"接口测试的api名字是{api_name}", attachment_type=allure.attachment_type.TEXT)
-            allure.story(api_name)
             url = ConfigParser.get_envi_api("host") + baseinfo["url"]
             allure.attach(url, f"接口测试的url是{url}", attachment_type=allure.attachment_type.TEXT)
 
             method = baseinfo["method"]
             allure.attach(method, f"接口测试的请求方法是{method}", attachment_type=allure.attachment_type.TEXT)
+
+            cookie = None
+            if baseinfo.get("cookies") is not None:
+                cookie = eval(replace_util(baseinfo['cookies']))
+            allure.attach(json.dumps(cookie), f"接口测试的cookies信息是{json.dumps(cookie)}", attachment_type=allure.attachment_type.TEXT)
 
             header = baseinfo["header"]
             if header is not None:
@@ -76,18 +85,17 @@ class RequestBase:
 
             # 提取测试用例名字
             case_name = replace_util(testdata.pop('case_name', None))
-            allure.attach(case_name, f"接口测试的用例名称是{case_name}", attachment_type=allure.attachment_type.TEXT)
+            allure.dynamic.title(next(case_id)+case_name)
+
 
             # 提取断言
             assertion = testdata.pop('assertion', None)
-            allure.attach(json.dumps(assertion), f"接口测试的断言表达式是{json.dumps(assertion)}",
-                          attachment_type=allure.attachment_type.TEXT)
+
 
             # 处理变量提取
             extract = testdata.pop('extract', None)
             extract_list = testdata.pop('extract_list', None)
-            allure.attach(json.dumps(extract), f"接口测试需要提取的变量是是{json.dumps(extract)}",
-                          attachment_type=allure.attachment_type.TEXT)
+
 
             # 处理文件上传
             file, files = testdata.pop('file', None), None
@@ -102,12 +110,20 @@ class RequestBase:
             for key, value in testdata.items():
                 if key in params_type:
                     testdata[key] = replace_util(value)
-            allure.attach(json.dumps(testdata), f"接口测试的请求数据是{json.dumps(testdata)}",
+                allure.attach(json.dumps(testdata), f"接口测试的参数类型是{json.dumps(key)}，请求数据是{json.dumps(value)}",
                           attachment_type=allure.attachment_type.TEXT)
+
 
             result = self.run_main(name=api_name, url=url, case_name=case_name, header=header, method=method,
                                    cookies=None,
                                    file=files, **testdata)
+            allure.attach(json.dumps(result.text), f"接口测试返回的结果是{result.text}",
+                          attachment_type=allure.attachment_type.TEXT)
+            allure.attach(json.dumps(assertion), f"接口测试的断言表达式是{json.dumps(assertion)}",
+                          attachment_type=allure.attachment_type.TEXT)
+            allure.attach(json.dumps(extract), f"接口测试需要提取的变量是{json.dumps(extract)}",
+                          attachment_type=allure.attachment_type.TEXT)
+
             try:
                 result_json = json.loads(result.text)
                 if result:

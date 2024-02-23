@@ -16,4 +16,4 @@ if __name__ == "__main__":
 
     pytest.main()
     shutil.copy('./environment.properties', './report/temp')  # 在Allure报告中添加环境信息
-    # os.system(f'allure serve ./report/temp')
+    os.system(f'allure serve ./report/temp')

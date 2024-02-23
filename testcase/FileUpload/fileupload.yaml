@@ -1,4 +1,5 @@
 - baseInfo:
+    feature_name: 合同模块
     api_name: 上传文件
     url: /prod-api/crmContract/contract/attachment/upload
     method: post
@@ -15,4 +16,12 @@
       extract:
         - id: $..id
         - code: "{'code': (.*?), 'msg':"
+    - case_name: 上传图片
+      data:
+        contractId: 8b2e1d7733a340a4ab6b367809bf64d3
+      file:
+        files: ./data/ceshi.jpg
+      assertion:
+        - contains: { "msg": "上传成功" }
+
 

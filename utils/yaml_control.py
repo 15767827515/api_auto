@@ -1,5 +1,7 @@
 import yaml
 
+from utils.recordlog import logs
+
 
 def read_yanl(yanl_path):
     '''
@@ -11,7 +13,7 @@ def read_yanl(yanl_path):
             data = yaml.safe_load(f)
             return data
     except Exception as e:
-        print(e)
+        logs.error(e)
 
 
 
@@ -31,6 +33,5 @@ def read_test_yaml(yanl_path):
 
 
 if __name__ == '__main__':
-    res = read_test_yaml(
-        r"D:\pytest-auto-api2-master\pytest-auto-api2-master\pythonProject\test_yaml_mangemet\LoginAPI\login.yaml")
-    print(res)
+
+    print(read_yanl(r"D:\pytest-auto-api2-master\pytest-auto-api2-master\pythonProject\testcase\CrmLogin\CrmLogin.yaml")[0]["allure_common"])
