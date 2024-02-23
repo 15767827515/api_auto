@@ -1,4 +1,5 @@
 import json
+from json import JSONDecodeError
 
 import allure
 import pytest
@@ -6,7 +7,7 @@ import requests
 
 from config.setting import ROOT_PATH
 from utils.assert_control import AssertionMangement
-from utils.extract_control import extract_data, replace_util
+from utils.extract_control import extract_data, replace_util, write_extract_yaml
 from utils.read_config import ConfigParser
 from utils.recordlog import logs
 from utils.yaml_control import read_test_yaml
@@ -16,7 +17,23 @@ class RequestBase:
 
     def send_request(self, **kwargs):
         session = requests.session()
-        result = session.request(**kwargs)
+        result = None
+        try:
+            result = session.request(**kwargs)
+            set_cookie = requests.utils.dict_from_cookiejar(result.cookies)
+            cookie = {}
+            if set_cookie:
+                cookie["cookie"] = set_cookie
+                write_extract_yaml(cookie)
+        except requests.exceptions.ConnectionError:
+            logs.error("ConnectionError--连接异常")
+            pytest.fail("接口请求异常，可能是request的连接数过多或请求速度过快导致程序报错！")
+        except requests.exceptions.HTTPError:
+            logs.error("HTTPError--http异常")
+            pytest.fail(f"请求异常:{requests.exceptions.HTTPError}")
+        except requests.exceptions.RequestException as e:
+            logs.error(e)
+            pytest.fail("请求异常，请检查系统或数据是否正常！")
         return result
 
     def run_main(self, name, url, case_name, header, method, cookies=None, file=None, **kwargs):
@@ -27,12 +44,12 @@ class RequestBase:
             logs.info(f'请求头：{header}')
             logs.info(f'cookies：{cookies}')
             req_params = json.dumps(kwargs, ensure_ascii=False)
-            logs.info(f'请求参数：{kwargs}')
-            result = self.send_request(url=url, headers=header, method=method, cookies=cookies, files=file,
-                                       verify=False, **kwargs)
-            return result
+            logs.info(f'请求参数：{req_params}')
         except Exception as e:
             logs.info(e)
+        result = self.send_request(url=url, headers=header, method=method, cookies=cookies, files=file,
+                                   verify=False, **kwargs)
+        return result
 
     def request_base(self, baseinfo, testdata):
         '''
@@ -43,7 +60,7 @@ class RequestBase:
         '''
         try:
             api_name = baseinfo["api_name"]
-            allure.attach(api_name,f"接口测试的api名字是{api_name}",attachment_type=allure.attachment_type.TEXT)
+            allure.attach(api_name, f"接口测试的api名字是{api_name}", attachment_type=allure.attachment_type.TEXT)
             allure.story(api_name)
             url = ConfigParser.get_envi_api("host") + baseinfo["url"]
             allure.attach(url, f"接口测试的url是{url}", attachment_type=allure.attachment_type.TEXT)
@@ -54,7 +71,8 @@ class RequestBase:
             header = baseinfo["header"]
             if header is not None:
                 header = replace_util(header)
-            allure.attach(json.dumps(header), f"接口测试的header是{json.dumps(header)}", attachment_type=allure.attachment_type.TEXT)
+            allure.attach(json.dumps(header), f"接口测试的header是{json.dumps(header)}",
+                          attachment_type=allure.attachment_type.TEXT)
 
             # 提取测试用例名字
             case_name = replace_util(testdata.pop('case_name', None))
@@ -62,51 +80,57 @@ class RequestBase:
 
             # 提取断言
             assertion = testdata.pop('assertion', None)
-            allure.attach(json.dumps(assertion), f"接口测试的断言表达式是{json.dumps(assertion)}", attachment_type=allure.attachment_type.TEXT)
+            allure.attach(json.dumps(assertion), f"接口测试的断言表达式是{json.dumps(assertion)}",
+                          attachment_type=allure.attachment_type.TEXT)
 
             # 处理变量提取
             extract = testdata.pop('extract', None)
             extract_list = testdata.pop('extract_list', None)
-            allure.attach(json.dumps(extract), f"接口测试需要提取的变量是是{json.dumps(extract)}", attachment_type=allure.attachment_type.TEXT)
+            allure.attach(json.dumps(extract), f"接口测试需要提取的变量是是{json.dumps(extract)}",
+                          attachment_type=allure.attachment_type.TEXT)
 
             # 处理文件上传
             file, files = testdata.pop('file', None), None
             if file is not None:
                 for fk, fv in file.items():
                     files = {fk: open(fv, mode='rb')}
-            allure.attach(json.dumps(file), f"接口测试的需要上传的文件路径是{json.dumps(file)}", attachment_type=allure.attachment_type.TEXT)
+                    allure.attach(json.dumps(file), '导入文件')
+            # allure.attach(json.dumps(file), f"接口测试的需要上传的文件路径是{json.dumps(file)}", attachment_type=allure.attachment_type.TEXT)
 
             params_type = ['data', 'json', 'params']
             # 处理请求传参
             for key, value in testdata.items():
                 if key in params_type:
                     testdata[key] = replace_util(value)
-            allure.attach(json.dumps(testdata), f"接口测试的请求数据是{json.dumps(testdata)}", attachment_type=allure.attachment_type.TEXT)
+            allure.attach(json.dumps(testdata), f"接口测试的请求数据是{json.dumps(testdata)}",
+                          attachment_type=allure.attachment_type.TEXT)
 
             result = self.run_main(name=api_name, url=url, case_name=case_name, header=header, method=method,
                                    cookies=None,
                                    file=files, **testdata)
             try:
+                result_json = json.loads(result.text)
                 if result:
-                    result = result.json()
-                    logs.info(f'请求返回数据是：{result}')
+                    logs.info(f'请求返回数据是：{result_json}')
+                    # 提取关联变量
+                    if extract is not None:
+                        extract_data(extract, result_json)
+
+                    # 调用断言方法
+                    if assertion is not None:
+                        AssertionMangement().assert_result(assertion, result_json)
+            except JSONDecodeError as js:
+                logs.error('系统异常或接口未请求！')
+                raise js
             except Exception as e:
-                result = result.text
-                logs.error(f'请求返回数据不是json，无法转换，接口返回原始数据是：{result}!/n 异常信息是:{e}')
+                logs.error(e)
+                raise e
 
-            # 提取关联变量
-            if extract is not None:
-                extract_data(extract, result)
 
-            # 调用断言方法
-            if assertion is not None:
-                AssertionMangement().assert_result(assertion, result)
 
         except Exception as e:
             logs.error(e)
-
-    def md5_encry(self):
-        pass
+            raise e
 
 
 if __name__ == '__main__':

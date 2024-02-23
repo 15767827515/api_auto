@@ -9,7 +9,7 @@
         username: admin
         password: jcqATMz+grB792HJWiTjz1icJkOck/wOgh0q2O2DfslWAmSl912+7H48D4w8y8w/71FcxNmrWXj09y3nvK3AKg==
       assertion:
-        - contains: {"msg":"操作成功"}
+        - contains: {"msg":"操作成功!!"}
         - equals: {"code":200}
       extract:
         - token: $..token
