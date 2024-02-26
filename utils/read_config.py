@@ -80,6 +80,29 @@ class ConfigControl:
         result = self.get_specific_options(section="RSA", name=name)
         return result
 
+    def get_sign_options(self,name):
+        '''
+
+        :param name:
+        :return:
+        '''
+        result=self.get_specific_options(section="SIGN",name=name)
+        return result
+
+    def get_dingdingrobot_options(self,name):
+        '''
+
+        :param name:
+        :return:
+        '''
+        result=self.get_specific_options(section="DINGDING",name=name)
+        return result
+
+    def get_enterprise_weChat_robot_options(self,name):
+
+        result=self.get_specific_options(section="WeChat_robot",name=name)
+        return result
+
 ConfigParser=ConfigControl()
 
 if __name__ == '__main__':

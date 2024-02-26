@@ -100,7 +100,7 @@ def write_extract_yaml(data, extract_yanl_path=extract_yanl_path):
     except Exception as e:
         logs.info(e)
 
-def clean_extract_yaml(filepath=extract_yanl_path):
+def clean_extract_yaml(filepath: object = extract_yanl_path) -> object:
     '''
     清除extract.yaml文件的数据
     :param filepath: extract.yaml的路径，默认为

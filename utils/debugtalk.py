@@ -12,7 +12,7 @@ import yaml
 # from crypto.PublicKey import RSA
 
 from config.setting import extract_yanl_path, ROOT_PATH, public_key_path
-from utils.read_config import ConfigControl
+from utils.read_config import ConfigControl, ConfigParser
 from utils.recordlog import logs
 
 import base64
@@ -114,9 +114,7 @@ class DebugTalk:
         return timestamp
 
 
-    def get_sign(self):
-        appid = "002a005801a34d818ce14977e6c592c9"
-        publicKey = "1a3a75caf3a5f2efac2106237bb040fb"
+    def get_sign(self,appid=ConfigParser.get_sign_options("appid"),publicKey=ConfigParser.get_sign_options("publicKey")):
         timestamp = self.get_timestamp()
         input_string = f"{appid}{publicKey}{timestamp}"
         md5_hash = hashlib.md5(input_string.encode('utf-8')).hexdigest()
@@ -134,5 +132,5 @@ if __name__ == '__main__':
     # print(DebugTalk().sha1_encryption(data))
     # print(DebugTalk().sha256_encryption(data))
     # print(DebugTalk().RSA_encryption(data))
-    print(DebugTalk().get_timestamp())
+    # print(DebugTalk().get_timestamp())
     print(DebugTalk().get_sign())
