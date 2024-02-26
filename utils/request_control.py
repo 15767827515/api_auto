@@ -45,7 +45,7 @@ class RequestBase:
             logs.info(f'请求头：{header}')
             logs.info(f'cookies：{cookies}')
             req_params = json.dumps(kwargs, ensure_ascii=False)
-            logs.info(f'请求参数：{req_params}')
+            logs.info(f'请求参数：{list(eval(req_params).values())[0]}')
         except Exception as e:
             logs.info(e)
         result = self.send_request(url=url, headers=header, method=method, cookies=cookies, files=file,
@@ -60,14 +60,17 @@ class RequestBase:
         :return:
         '''
         try:
-            feature_name=baseinfo["feature_name"]
+            feature_name = baseinfo["feature_name"]
             allure.dynamic.feature(feature_name)
 
             api_name = baseinfo["api_name"]
-            allure.dynamic.story(next(interface_id)+api_name)
+            allure.dynamic.story(next(interface_id) + api_name)
             allure.attach(api_name, f"接口测试的api名字是{api_name}", attachment_type=allure.attachment_type.TEXT)
-            url = ConfigParser.get_envi_api("host") + baseinfo["url"]
-            allure.attach(url, f"接口测试的url是{url}", attachment_type=allure.attachment_type.TEXT)
+            if baseinfo["url"].startswith("http"):
+                url = replace_util(baseinfo["url"])
+            else:
+                url = ConfigParser.get_envi_api("host") + replace_util(baseinfo["url"])
+                allure.attach(url, f"接口测试的url是{url}", attachment_type=allure.attachment_type.TEXT)
 
             method = baseinfo["method"]
             allure.attach(method, f"接口测试的请求方法是{method}", attachment_type=allure.attachment_type.TEXT)
@@ -75,7 +78,8 @@ class RequestBase:
             cookie = None
             if baseinfo.get("cookies") is not None:
                 cookie = eval(replace_util(baseinfo['cookies']))
-            allure.attach(json.dumps(cookie), f"接口测试的cookies信息是{json.dumps(cookie)}", attachment_type=allure.attachment_type.TEXT)
+            allure.attach(json.dumps(cookie), f"接口测试的cookies信息是{json.dumps(cookie)}",
+                          attachment_type=allure.attachment_type.TEXT)
 
             header = baseinfo["header"]
             if header is not None:
@@ -85,17 +89,14 @@ class RequestBase:
 
             # 提取测试用例名字
             case_name = replace_util(testdata.pop('case_name', None))
-            allure.dynamic.title(next(case_id)+case_name)
-
+            allure.dynamic.title(next(case_id) + case_name)
 
             # 提取断言
             assertion = testdata.pop('assertion', None)
 
-
             # 处理变量提取
             extract = testdata.pop('extract', None)
             extract_list = testdata.pop('extract_list', None)
-
 
             # 处理文件上传
             file, files = testdata.pop('file', None), None
@@ -110,9 +111,9 @@ class RequestBase:
             for key, value in testdata.items():
                 if key in params_type:
                     testdata[key] = replace_util(value)
-                allure.attach(json.dumps(testdata), f"接口测试的参数类型是{json.dumps(key)}，请求数据是{json.dumps(value)}",
-                          attachment_type=allure.attachment_type.TEXT)
-
+                allure.attach(json.dumps(testdata),
+                              f"接口测试的参数类型是{json.dumps(key)}，请求数据是{json.dumps(value)}",
+                              attachment_type=allure.attachment_type.TEXT)
 
             result = self.run_main(name=api_name, url=url, case_name=case_name, header=header, method=method,
                                    cookies=None,
@@ -136,6 +137,7 @@ class RequestBase:
                     if assertion is not None:
                         AssertionMangement().assert_result(assertion, result_json)
             except JSONDecodeError as js:
+                logs.info(f'请求返回数据是：{result.text}')
                 logs.error('系统异常或接口未请求！')
                 raise js
             except Exception as e:
@@ -156,4 +158,3 @@ if __name__ == '__main__':
                 }
     #
     RequestBase().request_base(baseinfo, testdata)
-

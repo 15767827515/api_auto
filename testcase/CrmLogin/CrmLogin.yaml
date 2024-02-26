@@ -8,11 +8,26 @@
     - case_name: 正常登录
       json:
         username: admin
-        password: jcqATMz+grB792HJWiTjz1icJkOck/wOgh0q2O2DfslWAmSl912+7H48D4w8y8w/71FcxNmrWXj09y3nvK3AKg==
+        password: ${RSA_encryption(V{Fc~39m)}
       assertion:
         - contains: {"msg":"操作成功"}
         - equals: {"code":200}
       extract:
         - token: $..token
+    - case_name: 密码错误
+      json:
+        username: admin
+        password: ${RSA_encryption(V{Fc~39999m)}
+      assertion:
+        - contains: { "msg": "用户不存在/密码错误" }
+        - equals: { "code": 500 }
+    - case_name: 账号不存在
+      json:
+        username: admin333
+        password: ${RSA_encryption(V{Fc~39999m)}
+      assertion:
+        - contains: { "msg": "不存在" }
+        - equals: { "code": 500 }
+
 
 

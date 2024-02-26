@@ -49,6 +49,8 @@ class AssertionMangement:
             else:
                 assert_flag += 1
                 logs.error(f"相等断言失败：接口实际结果{response}，不等于预期结果：" + str(expected))
+        else:
+            raise TypeError('相等断言--类型错误，预期结果和接口实际响应结果必须为字典类型！')
 
         return assert_flag
 
@@ -94,7 +96,7 @@ class AssertionMangement:
         if all_assert_flag == 0:
             logs.info('断言正常，测试成功')
             assert True
-        if all_assert_flag == 1:
+        if all_assert_flag !=0:
             logs.error('断言错误，测试失败')
             assert False
 

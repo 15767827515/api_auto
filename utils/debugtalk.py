@@ -1,8 +1,11 @@
 import base64
-import datetime
+
 import hashlib
 import os
 import random
+import time
+from datetime import datetime
+
 import rsa
 import yaml
 # from crypto.Cipher import PKCS1_v1_5
@@ -71,7 +74,7 @@ class DebugTalk:
         获取当前日期的标准格式
         :return:
         """
-        data = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        data = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         return data
 
     def md5_encryption(self, data):
@@ -90,27 +93,39 @@ class DebugTalk:
         sha256_data = hashlib.sha256(str(data).encode()).hexdigest()
         return sha256_data
 
-    def RSA_encryption(self, data: str,public_path=public_key_path):
+    def RSA_encryption(self, data: str, public_path=public_key_path):
         try:
             with open(public_path) as f:
-                jk=f.read()
+                jk = f.read()
         except Exception as e:
             logs.error(e)
         pubkey = rsa.PublicKey.load_pkcs1_openssl_pem(jk.encode())
         data_byts = rsa.encrypt(data.encode(), pubkey)
-        rsa_data=base64.b64encode(data_byts).decode()
+        rsa_data = base64.b64encode(data_byts).decode()
         return rsa_data
 
+    def get_timestamp(self):
+
+        current_utc_time = time.gmtime()
+        timestamp_seconds = time.mktime(current_utc_time)
+        # 将秒级时间戳转换为毫秒级时间戳
+        timestamp = str(int(timestamp_seconds * 1000))
+
+        return timestamp
 
 
-
-
+    def get_sign(self):
+        appid = "002a005801a34d818ce14977e6c592c9"
+        publicKey = "1a3a75caf3a5f2efac2106237bb040fb"
+        timestamp = self.get_timestamp()
+        input_string = f"{appid}{publicKey}{timestamp}"
+        md5_hash = hashlib.md5(input_string.encode('utf-8')).hexdigest()
+        return md5_hash
 
 
 if __name__ == '__main__':
     # print(DebugTalk().get_extract_var("orgId", 0))
     data = "V{Fc~39m"
-
 
     # print(random.choice(['A5DBa8CdFabEdfC06FDbE5AC4aF87', 'A5DBa8CdFabEdfC06FDbE5AC4aF872', 'A5DBa8CdFabEdfC06FDbE5AC4aF87']))
     # print(DebugTalk().get_now_date())
@@ -118,6 +133,6 @@ if __name__ == '__main__':
     # print(DebugTalk().base64_encryption(data))
     # print(DebugTalk().sha1_encryption(data))
     # print(DebugTalk().sha256_encryption(data))
-    print(DebugTalk().RSA_encryption(data))
-
-
+    # print(DebugTalk().RSA_encryption(data))
+    print(DebugTalk().get_timestamp())
+    print(DebugTalk().get_sign())
