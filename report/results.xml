@@ -1,1 +1,58 @@
-<?xml version="1.0" encoding="utf-8"?><testsuites><testsuite name="pytest" errors="0" failures="0" skipped="0" tests="19" time="0.861" timestamp="2024-02-23T09:19:31.003092" hostname="REDMI-PRO-YN"><testcase classname="testcase.Business interface.test_business_scenario.TestEBusinessScenario" name="test_business_scenario[case_info0]" time="0.373" /><testcase classname="testcase.Business interface.test_business_scenario.TestEBusinessScenario" name="test_business_scenario[case_info1]" time="0.033" /><testcase classname="testcase.Business interface.test_business_scenario.TestEBusinessScenario" name="test_business_scenario[case_info2]" time="0.014" /><testcase classname="testcase.Business interface.test_business_scenario.TestEBusinessScenario" name="test_business_scenario[case_info3]" time="0.018" /><testcase classname="testcase.Business interface.test_business_scenario.TestEBusinessScenario" name="test_business_scenario[case_info4]" time="0.013" /><testcase classname="testcase.ProductManager.test_productList.TestLogin" name="test_get_product_list[base_info0-testcase0]" time="0.037" /><testcase classname="testcase.ProductManager.test_productList.TestLogin" name="test_get_product_detail[base_info0-testcase0]" time="0.017" /><testcase classname="testcase.ProductManager.test_productList.TestLogin" name="test_commit_order[base_info0-testcase0]" time="0.015" /><testcase classname="testcase.ProductManager.test_productList.TestLogin" name="test_order_pay[base_info0-testcase0]" time="0.025" /><testcase classname="testcase.Single interface.test_debug_api.TestUserManager" name="test_add_user[base_info0-testcase0]" time="0.028" /><testcase classname="testcase.Single interface.test_debug_api.TestUserManager" name="test_add_user[base_info1-testcase1]" time="0.029" /><testcase classname="testcase.Single interface.test_debug_api.TestUserManager" name="test_add_user[base_info2-testcase2]" time="0.011" /><testcase classname="testcase.Single interface.test_debug_api.TestUserManager" name="test_add_user[base_info3-testcase3]" time="0.010" /><testcase classname="testcase.Single interface.test_debug_api.TestUserManager" name="test_update_user[base_info0-testcase0]" time="0.012" /><testcase classname="testcase.Single interface.test_debug_api.TestUserManager" name="test_delete_user[base_info0-testcase0]" time="0.010" /><testcase classname="testcase.Single interface.test_debug_api.TestUserManager" name="test_delete_user[base_info1-testcase1]" time="0.011" /><testcase classname="testcase.Single interface.test_debug_api.TestUserManager" name="test_delete_user[base_info2-testcase2]" time="0.011" /><testcase classname="testcase.Single interface.test_debug_api.TestUserManager" name="test_delete_user[base_info3-testcase3]" time="0.011" /><testcase classname="testcase.Single interface.test_debug_api.TestUserManager" name="test_query_user[base_info0-testcase0]" time="0.016" /></testsuite></testsuites>
+<?xml version="1.0" encoding="utf-8"?><testsuites><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="0.594" timestamp="2024-02-28T15:18:20.224699" hostname="REDMI-PRO-YN"><testcase classname="testcase.Invoice_Inspection.test_invoice_Inspection.TestInvoiceInspection" name="test_invoice_inspection[baseinfo0-testdata0]" time="0.107"><failure message="AssertionError">self = &lt;test_invoice_Inspection.TestInvoiceInspection object at 0x000001E74D98FBC0&gt;
+baseinfo = {'api_name': '发票上传', 'feature_name': '发票识别查验', 'header': None, 'method': 'get', ...}
+testdata = {}
+
+    @pytest.mark.smoke
+    @pytest.mark.parametrize(('baseinfo,testdata'),
+                             read_test_yaml(ROOT_PATH + r"\testcase\Invoice_Inspection\Invoice_upload.yaml"))
+    def test_invoice_inspection(self, baseinfo, testdata):
+&gt;       RequestBase().request_base(baseinfo, testdata)
+
+testcase\Invoice_Inspection\test_invoice_Inspection.py:24: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+utils\request_control.py:151: in request_base
+    raise e
+utils\request_control.py:145: in request_base
+    raise e
+utils\request_control.py:138: in request_base
+    AssertionMangement().assert_result(assertion, result_json)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;utils.assert_control.AssertionMangement object at 0x000001E74D9D5430&gt;
+expected = [{'equals': {'msg': '识别失败'}}], response = {'msg': '非法的sign'}
+status_code = 200
+
+    def assert_result(self, expected: list, response: dict, status_code=200):
+        '''
+        根据yaml的不同断言类型，调用不同断言方法获取断言结果
+        :param expected:
+        :param response:
+        :param status_code: 断言状态码默认为200，如果需要断言其他状态码，调用时候传入其他即可
+        :return:
+        '''
+        all_assert_flag = 0
+        try:
+            # 循环得到断言列表
+            for yq in expected:
+                for k, v in yq.items():
+                    # 循环断言列表，得到每个列表的断言类型k和断言表达式v
+                    if k == "contains":
+                        all_assert_flag = all_assert_flag + self.contain_assert(v, response, status_code)
+                    elif k == "equals":
+                        all_assert_flag = all_assert_flag + self.equal_assert(v, response)
+                    elif k == "sql":
+                        all_assert_flag = all_assert_flag + self.db_assert(json.loads(v), response)
+        except Exception as e:
+            logs.info("请检查断言字段是否包含在接口返回的内容中")
+            logs.info(f"异常信息:{e}")
+            raise e
+    
+        if all_assert_flag == 0:
+            logs.info('断言正常，测试成功')
+            assert True
+        if all_assert_flag != 0:
+            logs.error('断言错误，测试失败')
+&gt;           assert False
+E           AssertionError
+
+utils\assert_control.py:134: AssertionError</failure></testcase></testsuite></testsuites>
