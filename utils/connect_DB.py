@@ -4,7 +4,7 @@ import pymysql
 from utils.read_config import ConfigParser
 from utils.recordlog import logs
 
-
+#连接Sqlserve类
 class SqlserverConnect:
 
     def __init__(self):
@@ -18,8 +18,7 @@ class SqlserverConnect:
         }
 
         self.connect = pymssql.connect(**self.connect_info)
-        # cursor=pymysql.cursors.DictCursor 将结果返回字典类型
-        self.cursor = self.connect.cursor(as_dict=True)
+        self.cursor = self.connect.cursor(as_dict=True)  # as_dict=True 将结果返回字典类型
 
     def query(self, sql, query_type="one"):
         '''

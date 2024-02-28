@@ -19,10 +19,11 @@ class ConnnectRedis:
             "db": ConfigParser.get_redis_options("db"),
             "decode_responses": True
         }
-
+        # 获取redis集群的节点
         startup_nodes_str=ConfigParser.get_redis_options("startup_nodes")
         self.nodes_list = []
         try:
+            # 判断redis下的startup_nodes_str是否为空，来执行集群连接或者是单服务连接
             if startup_nodes_str:
                 startup_nodes_list=startup_nodes_str.split(";")
                 host, port=None,None
@@ -52,6 +53,13 @@ class ConnnectRedis:
             logs.error(f'Redis Error：{e}')
 
     def set(self, key, value, ex=None):
+        '''
+        根据key设置对应的redis value
+        :param key:
+        :param value:
+        :param ex:
+        :return:
+        '''
         try:
             self.con.set(key, value, ex=ex)
         except Exception as e:

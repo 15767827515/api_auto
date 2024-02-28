@@ -12,6 +12,7 @@ import yaml
 # from crypto.PublicKey import RSA
 
 from config.setting import extract_yanl_path, ROOT_PATH, public_key_path
+
 from utils.read_config import ConfigControl, ConfigParser
 from utils.recordlog import logs
 
@@ -21,6 +22,11 @@ import base64
 class DebugTalk:
 
     def get_authorization(self, extract_yaml_file=extract_yanl_path):
+        '''
+        获取Bearer token的authorization
+        :param extract_yaml_file:
+        :return:
+        '''
         try:
             with open(extract_yaml_file, "r", encoding="utf-8") as f:
                 data = yaml.safe_load(f)
@@ -123,7 +129,7 @@ class DebugTalk:
 
 if __name__ == '__main__':
     # print(DebugTalk().get_extract_var("orgId", 0))
-    data = "V{Fc~39m"
+    # data = "V{Fc~39m"
 
     # print(random.choice(['A5DBa8CdFabEdfC06FDbE5AC4aF87', 'A5DBa8CdFabEdfC06FDbE5AC4aF872', 'A5DBa8CdFabEdfC06FDbE5AC4aF87']))
     # print(DebugTalk().get_now_date())
@@ -133,4 +139,8 @@ if __name__ == '__main__':
     # print(DebugTalk().sha256_encryption(data))
     # print(DebugTalk().RSA_encryption(data))
     # print(DebugTalk().get_timestamp())
-    print(DebugTalk().get_sign())
+    # print(DebugTalk().get_sign())
+    from utils.extract_control import replace_util
+    url="http://192.168.2.118:84/HttpYnInvOcrCheck.jsp?appid=002a005801a34d818ce14977e6c592c9&timestamp=${get_timestamp()}&ischeck=1&systemname=ctg&usertag=ctg&billno=ctg&sign=${get_sign(\"102a005801a34d818ce14977e6c592c9\",\"2a3a75caf3a5f2efac2106237bb040fb\")}"
+    data=replace_util(url)
+    print(data)

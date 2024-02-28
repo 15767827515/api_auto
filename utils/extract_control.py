@@ -19,7 +19,7 @@ def replace_util(data):
         str_data = json.dumps(data)
     for i in range(str_data.count("${")):
         if '${' in str_data and '}' in str_data:
-            logs.info('替换后的数据：{}'.format(str_data))
+            logs.info('替换前的数据：{}'.format(str_data))
             start_index = str_data.index('$')
             end_index = str_data.index("}", start_index)
             # 提取包含函数名和参数的字符串

@@ -1,0 +1,17 @@
+- baseInfo:
+    feature_name: 发票识别查验
+    api_name: 发票上传
+    url: http://192.168.2.118:84/HttpYnInvOcrCheck.jsp?appid=002a005801a34d818ce14977e6c592c9&timestamp=${get_timestamp()}&ischeck=1&systemname=ctg&usertag=ctg&billno=ctg&sign=${get_sign("102a005801a34d818ce14977e6c592c9","2a3a75caf3a5f2efac2106237bb040fb")}
+    method: get
+    header:
+  testCase:
+    - case_name: 电票上传
+      file:
+        files: ./data/PDF(1).pdf
+      assertion:
+        - equals: {"msg":"识别失败"}
+
+
+
+
+

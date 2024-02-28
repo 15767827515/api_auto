@@ -11,7 +11,9 @@ if __name__ == "__main__":
         '-v',  # 详细输出
         '--alluredir=./report/temp',  # Allure 报告目录
         './testcase',  # 测试目录
-        '--clean-alluredir'  # 清理报告目录
+        '--clean-alluredir', # 清理报告目录
+        "-k smoke",
+        "--junitxml=./report/results.xml"
     ]
 
     pytest.main()
