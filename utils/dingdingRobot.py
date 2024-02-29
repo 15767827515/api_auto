@@ -39,4 +39,4 @@ class DingDingRobot:
 
 
 if __name__ == '__main__':
-    DingDingRobot().send_dingding_request()
+    DingDingRobot().send_dingding_request(1,at_all=False)
