@@ -103,6 +103,12 @@ class ConfigControl:
         result=self.get_specific_options(section="WeChat_robot",name=name)
         return result
 
+    def get_jenkins(self, name):
+        result = self.get_specific_options(section="jenkins", name=name)
+        return result
+
+
+
 ConfigParser=ConfigControl()
 
 if __name__ == '__main__':

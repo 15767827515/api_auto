@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><testsuites><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="0.594" timestamp="2024-02-28T15:18:20.224699" hostname="REDMI-PRO-YN"><testcase classname="testcase.Invoice_Inspection.test_invoice_Inspection.TestInvoiceInspection" name="test_invoice_inspection[baseinfo0-testdata0]" time="0.107"><failure message="AssertionError">self = &lt;test_invoice_Inspection.TestInvoiceInspection object at 0x000001E74D98FBC0&gt;
+<?xml version="1.0" encoding="utf-8"?><testsuites><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="7" time="14.466" timestamp="2024-02-29T10:04:48.476196" hostname="REDMI-PRO-YN"><testcase classname="testcase.CrmLogin.test_crm_login.TestCrmLogin" name="test_crmlogin[baseinfo0-testdata0]" time="0.390" /><testcase classname="testcase.CrmLogin.test_crm_login.TestCrmLogin" name="test_crmlogin[baseinfo1-testdata1]" time="0.151" /><testcase classname="testcase.CrmLogin.test_crm_login.TestCrmLogin" name="test_crmlogin[baseinfo2-testdata2]" time="0.082" /><testcase classname="testcase.FileUpload.test_uploadfile.TestUploadfile" name="test_upload_file[baseinfo0-testdata0]" time="0.238" /><testcase classname="testcase.FileUpload.test_uploadfile.TestUploadfile" name="test_upload_file[baseinfo1-testdata1]" time="0.400" /><testcase classname="testcase.Invoice_Inspection.test_invoice_Inspection.TestInvoiceInspection" name="test_upload_file[baseinfo0-testdata0]" time="12.776" /><testcase classname="testcase.Invoice_Inspection.test_invoice_Inspection.TestInvoiceInspection" name="test_invoice_inspection[baseinfo0-testdata0]" time="0.197"><failure message="AssertionError">self = &lt;test_invoice_Inspection.TestInvoiceInspection object at 0x0000029FDAD3F440&gt;
 baseinfo = {'api_name': '发票上传', 'feature_name': '发票识别查验', 'header': None, 'method': 'get', ...}
 testdata = {}
 
@@ -18,7 +18,7 @@ utils\request_control.py:138: in request_base
     AssertionMangement().assert_result(assertion, result_json)
 _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
 
-self = &lt;utils.assert_control.AssertionMangement object at 0x000001E74D9D5430&gt;
+self = &lt;utils.assert_control.AssertionMangement object at 0x0000029FDAE26930&gt;
 expected = [{'equals': {'msg': '识别失败'}}], response = {'msg': '非法的sign'}
 status_code = 200
 
