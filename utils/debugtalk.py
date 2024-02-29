@@ -3,6 +3,7 @@ import base64
 import hashlib
 import os
 import random
+import string
 import time
 from datetime import datetime
 
@@ -119,12 +120,29 @@ class DebugTalk:
 
         return timestamp
 
-
-    def get_sign(self,appid=ConfigParser.get_sign_options("appid"),publicKey=ConfigParser.get_sign_options("publicKey")):
+    def get_sign(self, appid=ConfigParser.get_sign_options("appid"),
+                 publicKey=ConfigParser.get_sign_options("publicKey")):
         timestamp = self.get_timestamp()
         input_string = f"{appid}{publicKey}{timestamp}"
         md5_hash = hashlib.md5(input_string.encode('utf-8')).hexdigest()
         return md5_hash
+
+    def generate_taxno(self, length=20):
+        # 将所有字母和数字拼接成一个字符串characters
+        characters = string.ascii_uppercase + string.digits + string.ascii_lowercase
+        random_taxno = ''
+        for i in range(length):
+            random_taxno = random_taxno + random.choice(characters)
+        return random_taxno
+
+    def generate_companyname(self, length=10):
+        # 将所有字母和数字拼接成一个字符串characters
+        characters = "投保单尾数选其中一个它就会合并一起付款了付完款把付款界面截图下来然后发我一个给您安排返现然后那个礼品的话你把地址发给我"
+        random_companyname = ''
+        for i in range(length):
+            random_companyname = random_companyname + random.choice(characters)
+        random_companyname+="有限公司"
+        return random_companyname
 
 
 if __name__ == '__main__':
@@ -140,7 +158,9 @@ if __name__ == '__main__':
     # print(DebugTalk().RSA_encryption(data))
     # print(DebugTalk().get_timestamp())
     # print(DebugTalk().get_sign())
-    from utils.extract_control import replace_util
-    url="http://192.168.2.118:84/HttpYnInvOcrCheck.jsp?appid=002a005801a34d818ce14977e6c592c9&timestamp=${get_timestamp()}&ischeck=1&systemname=ctg&usertag=ctg&billno=ctg&sign=${get_sign(\"102a005801a34d818ce14977e6c592c9\",\"2a3a75caf3a5f2efac2106237bb040fb\")}"
-    data=replace_util(url)
-    print(data)
+    # from utils.extract_control import replace_util
+    # url="http://192.168.2.118:84/HttpYnInvOcrCheck.jsp?appid=002a005801a34d818ce14977e6c592c9&timestamp=${get_timestamp()}&ischeck=1&systemname=ctg&usertag=ctg&billno=ctg&sign=${get_sign(\"102a005801a34d818ce14977e6c592c9\",\"2a3a75caf3a5f2efac2106237bb040fb\")}"
+    # data=replace_util(url)
+    # print(data)
+    print(DebugTalk().generate_taxno())
+    print(DebugTalk().generate_companyname())

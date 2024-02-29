@@ -39,9 +39,9 @@ def pytest_terminal_summary(terminalreporter, exitstatus, config):
     #     跳过执行数量：{skipped}
     #     执行总时长：{duration}
     #     """
-    summary = str(JenkinsManege().get_jenkins_report())
-    if summary:
-        dingding_res = DingDingRobot().send_dingding_request(summary,at_all=False)
-        logs.info(f"测试结果发送到钉钉群的接口返回结果是：{dingding_res}")
-        wechat_res = send_enterprise_weChat_robot(summary,at_all=False)
-        logs.info(f"测试结果发送到企业微信群的接口返回结果是：{wechat_res}")
+    # summary = str(JenkinsManege().get_jenkins_report())
+    # if summary:
+    #     dingding_res = DingDingRobot().send_dingding_request(summary,at_all=False)
+    #     logs.info(f"测试结果发送到钉钉群的接口返回结果是：{dingding_res}")
+    #     wechat_res = send_enterprise_weChat_robot(summary,at_all=False)
+    #     logs.info(f"测试结果发送到企业微信群的接口返回结果是：{wechat_res}")

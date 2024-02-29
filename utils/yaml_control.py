@@ -23,15 +23,15 @@ def read_test_yaml(yanl_path):
     :param yanl_path:
     :return:
     '''
-    row_data = read_yanl(yanl_path)[0]
+    row_data = read_yanl(yanl_path)
     testcase_list = []
     if row_data:
-        baseinfo = row_data["baseInfo"]
-        for testdata in row_data["testCase"]:
-            testcase_list.append((baseinfo, testdata))
+        for interface_info in row_data:
+            baseinfo = interface_info["baseInfo"]
+            for testdata in interface_info["testCase"]:
+                testcase_list.append((baseinfo, testdata))
     return testcase_list
 
 
 if __name__ == '__main__':
-
-    print(read_yanl(r"D:\pytest-auto-api2-master\pytest-auto-api2-master\pythonProject\testcase\CrmLogin\CrmLogin.yaml")[0]["allure_common"])
+    print(read_test_yaml(r"D:\pytest-auto-api2-master\pytest-auto-api2-master\pythonProject\testcase\SMOKE\smoke.yaml"))

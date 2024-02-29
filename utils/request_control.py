@@ -45,7 +45,7 @@ class RequestBase:
             logs.info(f'请求头：{header}')
             logs.info(f'cookies：{cookies}')
             req_params = json.dumps(kwargs, ensure_ascii=False)
-            logs.info(f'请求参数：{list(eval(req_params).values())[0]}')
+            logs.info(f'请求参数：{req_params}')
         except Exception as e:
             logs.info(e)
         result = self.send_request(url=url, headers=header, method=method, cookies=cookies, files=file,
@@ -118,6 +118,7 @@ class RequestBase:
             result = self.run_main(name=api_name, url=url, case_name=case_name, header=header, method=method,
                                    cookies=None,
                                    file=files, **testdata)
+            logs.info(f'请求返回数据是：{result.text}')
             allure.attach(json.dumps(result.text), f"接口测试返回的结果是{result.text}",
                           attachment_type=allure.attachment_type.TEXT)
             allure.attach(json.dumps(assertion), f"接口测试的断言表达式是{json.dumps(assertion)}",
@@ -127,8 +128,7 @@ class RequestBase:
 
             try:
                 result_json = json.loads(result.text)
-                if result:
-                    logs.info(f'请求返回数据是：{result_json}')
+                if result_json:
                     # 提取关联变量
                     if extract is not None:
                         extract_data(extract, result_json)
@@ -137,7 +137,6 @@ class RequestBase:
                     if assertion is not None:
                         AssertionMangement().assert_result(assertion, result_json)
             except JSONDecodeError as js:
-                logs.info(f'请求返回数据是：{result.text}')
                 logs.error('系统异常或接口未请求！')
                 raise js
             except Exception as e:

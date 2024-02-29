@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><testsuites><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="7" time="8.654" timestamp="2024-02-29T10:45:08.646171" hostname="REDMI-PRO-YN"><testcase classname="testcase.CrmLogin.test_crm_login.TestCrmLogin" name="test_crmlogin[baseinfo0-testdata0]" time="0.579" /><testcase classname="testcase.CrmLogin.test_crm_login.TestCrmLogin" name="test_crmlogin[baseinfo1-testdata1]" time="0.156" /><testcase classname="testcase.CrmLogin.test_crm_login.TestCrmLogin" name="test_crmlogin[baseinfo2-testdata2]" time="0.054" /><testcase classname="testcase.FileUpload.test_uploadfile.TestUploadfile" name="test_upload_file[baseinfo0-testdata0]" time="0.430" /><testcase classname="testcase.FileUpload.test_uploadfile.TestUploadfile" name="test_upload_file[baseinfo1-testdata1]" time="0.284" /><testcase classname="testcase.Invoice_Inspection.test_invoice_Inspection.TestInvoiceInspection" name="test_upload_file[baseinfo0-testdata0]" time="6.800" /><testcase classname="testcase.Invoice_Inspection.test_invoice_Inspection.TestInvoiceInspection" name="test_invoice_inspection[baseinfo0-testdata0]" time="0.113"><failure message="AssertionError">self = &lt;test_invoice_Inspection.TestInvoiceInspection object at 0x000002A9B46FFC20&gt;
+<?xml version="1.0" encoding="utf-8"?><testsuites><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="11" time="11.234" timestamp="2024-02-29T17:36:28.834286" hostname="REDMI-PRO-YN"><testcase classname="testcase.CrmLogin.test_crm_login.TestCrmLogin" name="test_crmlogin[baseinfo0-testdata0]" time="0.250" /><testcase classname="testcase.CrmLogin.test_crm_login.TestCrmLogin" name="test_crmlogin[baseinfo1-testdata1]" time="0.120" /><testcase classname="testcase.CrmLogin.test_crm_login.TestCrmLogin" name="test_crmlogin[baseinfo2-testdata2]" time="0.040" /><testcase classname="testcase.FileUpload.test_uploadfile.TestUploadfile" name="test_upload_file[baseinfo0-testdata0]" time="0.826" /><testcase classname="testcase.FileUpload.test_uploadfile.TestUploadfile" name="test_upload_file[baseinfo1-testdata1]" time="0.375" /><testcase classname="testcase.Invoice_Inspection.test_invoice_Inspection.TestInvoiceInspection" name="test_upload_file[baseinfo0-testdata0]" time="6.713" /><testcase classname="testcase.Invoice_Inspection.test_invoice_Inspection.TestInvoiceInspection" name="test_invoice_inspection[baseinfo0-testdata0]" time="0.116"><failure message="AssertionError">self = &lt;test_invoice_Inspection.TestInvoiceInspection object at 0x0000027A25DAF3E0&gt;
 baseinfo = {'api_name': '发票上传', 'feature_name': '发票识别查验', 'header': None, 'method': 'get', ...}
 testdata = {}
 
@@ -10,15 +10,15 @@ testdata = {}
 
 testcase\Invoice_Inspection\test_invoice_Inspection.py:24: 
 _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
-utils\request_control.py:151: in request_base
+utils\request_control.py:150: in request_base
     raise e
-utils\request_control.py:145: in request_base
+utils\request_control.py:144: in request_base
     raise e
 utils\request_control.py:138: in request_base
     AssertionMangement().assert_result(assertion, result_json)
 _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
 
-self = &lt;utils.assert_control.AssertionMangement object at 0x000002A9B47E2960&gt;
+self = &lt;utils.assert_control.AssertionMangement object at 0x0000027A25E97CE0&gt;
 expected = [{'equals': {'msg': '识别失败'}}], response = {'msg': '非法的sign'}
 status_code = 200
 
@@ -55,4 +55,4 @@ status_code = 200
 &gt;           assert False
 E           AssertionError
 
-utils\assert_control.py:134: AssertionError</failure></testcase></testsuite></testsuites>
+utils\assert_control.py:134: AssertionError</failure></testcase><testcase classname="testcase.SMOKE.test_smoke.TestSmoke" name="test_smoke[baseinfo0-testdata0]" time="0.145" /><testcase classname="testcase.SMOKE.test_smoke.TestSmoke" name="test_smoke[baseinfo1-testdata1]" time="2.142" /><testcase classname="testcase.SMOKE.test_smoke.TestSmoke" name="test_smoke[baseinfo2-testdata2]" time="0.112" /><testcase classname="testcase.SMOKE.test_smoke.TestSmoke" name="test_smoke[baseinfo3-testdata3]" time="0.123" /></testsuite></testsuites>
