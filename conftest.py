@@ -41,7 +41,7 @@ def pytest_terminal_summary(terminalreporter, exitstatus, config):
     #     """
     summary = JenkinsManege().get_jenkins_report()
     if summary:
-        dingding_res = DingDingRobot().send_dingding_request(summary)
+        dingding_res = DingDingRobot().send_dingding_request(summary,at_all=False)
         logs.info(f"测试结果发送到钉钉群的接口返回结果是：{dingding_res}")
-        wechat_res = send_enterprise_weChat_robot(summary)
+        wechat_res = send_enterprise_weChat_robot(summary,at_all=False)
         logs.info(f"测试结果发送到企业微信群的接口返回结果是：{wechat_res}")
