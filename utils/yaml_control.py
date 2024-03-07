@@ -34,4 +34,6 @@ def read_test_yaml(yanl_path):
 
 
 if __name__ == '__main__':
-    print(read_test_yaml(r"D:\pytest-auto-api2-master\pytest-auto-api2-master\pythonProject\testcase\SMOKE\smoke.yaml"))
+    # print(read_test_yaml(r"/testcase_bp\SMOKE\smoke.yaml"))
+
+    print(read_yanl(r"D:\pytest-auto-api2-master\pytest-auto-api2-master\pythonProject\testdata\Crm_Login\crm_login.yaml"))

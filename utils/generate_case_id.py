@@ -43,9 +43,9 @@ def title_info(yanl_path):
 
 if __name__ == '__main__':
     # print(feature_info(
-    #     r"D:\pytest-auto-api2-master\pytest-auto-api2-master\pythonProject\testcase\CrmLogin\CrmLogin.yaml"))
+    #     r"D:\pytest-auto-api2-master\pytest-auto-api2-master\pythonProject\testcase_bp\Crm_Login\crm_login.yaml"))
     # print(story_info(
-    #     r"D:\pytest-auto-api2-master\pytest-auto-api2-master\pythonProject\testcase\CrmLogin\CrmLogin.yaml"))
+    #     r"D:\pytest-auto-api2-master\pytest-auto-api2-master\pythonProject\testcase_bp\Crm_Login\crm_login.yaml"))
     # print(title_info(
-    #     r"D:\pytest-auto-api2-master\pytest-auto-api2-master\pythonProject\testcase\CrmLogin\CrmLogin.yaml"))
+    #     r"D:\pytest-auto-api2-master\pytest-auto-api2-master\pythonProject\testcase_bp\Crm_Login\crm_login.yaml"))
     print(sys.executable)
