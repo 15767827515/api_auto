@@ -1,6 +1,5 @@
 import os
 import textwrap
-
 from config.setting import testdata_path, real_time_update_test_cases
 from config.setting import testcase_path
 from utils.recordlog import logs
@@ -8,7 +7,6 @@ from utils.yaml_control import read_yanl
 
 
 class TestCaseAutomaticGeneration:
-
     def get_all_testdata_path(self, testdata_path=testdata_path):
         '''
         获取测试用例文件下的所有yaml路径
@@ -59,7 +57,7 @@ class TestCaseAutomaticGeneration:
         # 取yaml测试文件的上级文件夹与testcase路径拼成新文件夹的路径
         case_dir_path = os.path.join(testcase_path, case_dir_name)
         try:
-            if os.path.exists(testcase_path):
+            if not os.path.exists(case_dir_path):
                 os.mkdir(case_dir_path)
 
         except Exception as e:
@@ -97,7 +95,8 @@ class TestCaseAutomaticGeneration:
         case_function_name = "test_" + self.get_case_file_name(file_path)
         return case_function_name
 
-    def write_testcase_file(self, testcase_path, testdata_yaml_path, class_name, function_name):
+    def write_testcase_file(self, testcase_path, testdata_yaml_path, class_name, function_name,
+                            real_time_update_test_cases=real_time_update_test_cases):
 
         page = f'''
 import allure
@@ -114,14 +113,14 @@ class {class_name}:
         RequestBase().request_base(baseinfo,testdata)
 
 '''
-        indented_page = textwrap.indent(page, '')
+
         if real_time_update_test_cases:
             with open(testcase_path, 'w', encoding='utf-8') as file:
-                file.write(indented_page)
+                file.write(page)
         elif real_time_update_test_cases is False:
             if not os.path.exists(testcase_path):
                 with open(testcase_path, 'w', encoding='utf-8') as file:
-                    file.write(indented_page)
+                    file.write(page)
 
     def get_case_automatic(self) -> None:
         """自动生成 测试代码"""
@@ -145,5 +144,3 @@ if __name__ == '__main__':
     print(TT.get_case_file_name(file_path))
     print(TT.generate_case_class_name(file_path))
     print(TT.get_case_automatic())
-
-1
