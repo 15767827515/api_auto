@@ -4,6 +4,8 @@ import shutil
 import sys
 import pytest
 
+from utils.get_case_automatic import TestCaseAutomaticGeneration
+
 if __name__ == "__main__":
     sys.argv = [
         sys.argv[0],  # 保留脚本名称
@@ -15,7 +17,7 @@ if __name__ == "__main__":
         # "-k smoke",
         "--junitxml=./report/results.xml"
     ]
-
+    TestCaseAutomaticGeneration().get_case_automatic()
     pytest.main()
     shutil.copy('./environment.properties', './report/temp')  # 在Allure报告中添加环境信息
-    os.system(f'allure serve ./report/temp')
+    # os.system(f'allure serve ./report/temp')

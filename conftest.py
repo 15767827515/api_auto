@@ -6,6 +6,7 @@ import pytest
 from utils.Enterprise_WeChat_Robot import send_enterprise_weChat_robot
 from utils.dingdingRobot import DingDingRobot
 from utils.extract_control import clean_extract_yaml
+from utils.get_case_automatic import TestCaseAutomaticGeneration
 from utils.jenkins_control import JenkinsManege
 from utils.recordlog import logs
 
@@ -13,6 +14,7 @@ from utils.recordlog import logs
 @pytest.fixture(scope="session", autouse=True)
 def clean_extract_yaml_data():
     clean_extract_yaml()
+
 
 
 # @pytest.fixture(scope="session", autouse=True)
