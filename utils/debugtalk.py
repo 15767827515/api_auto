@@ -1,5 +1,5 @@
 import base64
-
+from faker import Faker
 import hashlib
 import os
 import random
@@ -21,6 +21,8 @@ import base64
 
 
 class DebugTalk:
+    def __init__(self):
+        self.zh_fk = Faker(locale="zh_CN")
 
     def get_authorization(self, extract_yaml_file=extract_yanl_path):
         '''
@@ -141,8 +143,54 @@ class DebugTalk:
         random_companyname = ''
         for i in range(length):
             random_companyname = random_companyname + random.choice(characters)
-        random_companyname+="有限公司"
+        random_companyname += "有限公司"
         return random_companyname
+
+    def generate_randon_int(cls, *args):
+        """
+               :return: 随机数
+        """
+        if not args:
+            return random.randint(0, 9999)
+        else:
+            min_num = min(*args)
+            max_num = max(*args)
+            return random.randint(min_num, max_num)
+
+    def generate_randon_company_name(self):
+        '''
+        随机生成公司名字
+        :return:
+        '''
+        return "test_" + self.zh_fk.company()
+
+    def generate_randon_phone_number(self):
+        '''
+        随机生成手机号码
+        :return:
+        '''
+        return self.zh_fk.phone_number()
+
+    def generate_randon_name(self):
+        '''
+        随机生成人名
+        :return:
+        '''
+        return self.zh_fk.name()
+
+    def generate_randon_id(self):
+        '''
+        随机生成身份证号码
+        :return:
+        '''
+        return self.zh_fk.ssn()
+
+    def generate_randon_email(self):
+        '''
+        随机生成邮箱
+        :return:
+        '''
+        return self.zh_fk.email()
 
 
 if __name__ == '__main__':
