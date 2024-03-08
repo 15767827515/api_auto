@@ -1,1 +1,81 @@
-<?xml version="1.0" encoding="utf-8"?><testsuites><testsuite name="pytest" errors="0" failures="0" skipped="0" tests="9" time="2.945" timestamp="2024-03-07T18:33:21.540287" hostname="REDMI-PRO-YN"><testcase classname="testcase.Crm_Login.test_crm_login.TestCrmLogin" name="test_crm_login[baseinfo0-testdata0]" time="0.407" /><testcase classname="testcase.Crm_Login.test_crm_login.TestCrmLogin" name="test_crm_login[baseinfo1-testdata1]" time="0.412" /><testcase classname="testcase.Crm_Login.test_crm_login.TestCrmLogin" name="test_crm_login[baseinfo2-testdata2]" time="0.181" /><testcase classname="testcase.Smoking_Process.test_smoking_process.TestSmokingProcess" name="test_smoking_process[baseinfo0-testdata0]" time="0.190" /><testcase classname="testcase.Smoking_Process.test_smoking_process.TestSmokingProcess" name="test_smoking_process[baseinfo1-testdata1]" time="0.832" /><testcase classname="testcase.Smoking_Process.test_smoking_process.TestSmokingProcess" name="test_smoking_process[baseinfo2-testdata2]" time="0.132" /><testcase classname="testcase.Smoking_Process.test_smoking_process.TestSmokingProcess" name="test_smoking_process[baseinfo3-testdata3]" time="0.090" /><testcase classname="testcase.Upload_File.test_upload_file.TestUploadFile" name="test_upload_file[baseinfo0-testdata0]" time="0.162" /><testcase classname="testcase.Upload_File.test_upload_file.TestUploadFile" name="test_upload_file[baseinfo1-testdata1]" time="0.424" /></testsuite></testsuites>
+<?xml version="1.0" encoding="utf-8"?><testsuites><testsuite name="pytest" errors="0" failures="2" skipped="0" tests="11" time="5.029" timestamp="2024-03-08T10:11:45.312807" hostname="REDMI-PRO-YN"><testcase classname="testcase.Crm_Login.test_crm_login.TestCrmLogin" name="test_crm_login[baseinfo0-testdata0]" time="0.686" /><testcase classname="testcase.Crm_Login.test_crm_login.TestCrmLogin" name="test_crm_login[baseinfo1-testdata1]" time="0.255" /><testcase classname="testcase.Crm_Login.test_crm_login.TestCrmLogin" name="test_crm_login[baseinfo2-testdata2]" time="0.173" /><testcase classname="testcase.Invoice_Inspection.test_inoice_inspection.TestInoiceInspection" name="test_inoice_inspection[baseinfo0-testdata0]" time="0.191"><failure message="json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)">self = &lt;test_inoice_inspection.TestInoiceInspection object at 0x0000024331F26720&gt;
+baseinfo = {'api_name': '发票查验', 'feature_name': '发票识别查验', 'header': {'Content-Type': 'application/xml; charset=utf-8'}, 'method': 'get', ...}
+testdata = {'json': {'fpdm': 144032009110, 'fphm': 15220788, 'fpje': 6900, 'jym': 'c6bb3', ...}}
+
+    @pytest.mark.parametrize(('baseinfo,testdata'),
+                     read_test_yaml(r"D:\pytest-auto-api2-master\pytest-auto-api2-master\pythonProject\testdata\Invoice_Inspection\inoice_inspection.yaml"))
+    def test_inoice_inspection(self,baseinfo,testdata):
+&gt;       RequestBase().request_base(baseinfo,testdata)
+
+testcase\Invoice_Inspection\test_inoice_inspection.py:13: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+utils\request_control.py:150: in request_base
+    raise e
+utils\request_control.py:141: in request_base
+    raise js
+utils\request_control.py:130: in request_base
+    result_json = json.loads(result.text)
+C:\Users\yn\AppData\Local\Programs\Python\Python312\Lib\json\__init__.py:346: in loads
+    return _default_decoder.decode(s)
+C:\Users\yn\AppData\Local\Programs\Python\Python312\Lib\json\decoder.py:337: in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;json.decoder.JSONDecoder object at 0x000002432F442AE0&gt;, s = '', idx = 0
+
+    def raw_decode(self, s, idx=0):
+        """Decode a JSON document from ``s`` (a ``str`` beginning with
+        a JSON document) and return a 2-tuple of the Python
+        representation and the index in ``s`` where the document ended.
+    
+        This can be used to decode a JSON document from a string that may
+        have extraneous data at the end.
+    
+        """
+        try:
+            obj, end = self.scan_once(s, idx)
+        except StopIteration as err:
+&gt;           raise JSONDecodeError("Expecting value", s, err.value) from None
+E           json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+
+C:\Users\yn\AppData\Local\Programs\Python\Python312\Lib\json\decoder.py:355: JSONDecodeError</failure></testcase><testcase classname="testcase.Invoice_Upload.test_invoice_upload.TestInvoiceUpload" name="test_invoice_upload[baseinfo0-testdata0]" time="0.286"><failure message="json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)">self = &lt;test_invoice_upload.TestInvoiceUpload object at 0x0000024331F26750&gt;
+baseinfo = {'api_name': '发票上传', 'feature_name': '发票识别查验', 'header': None, 'method': 'get', ...}
+testdata = {}
+
+    @pytest.mark.parametrize(('baseinfo,testdata'),
+                     read_test_yaml(r"D:\pytest-auto-api2-master\pytest-auto-api2-master\pythonProject\testdata\Invoice_Upload\invoice_upload.yaml"))
+    def test_invoice_upload(self,baseinfo,testdata):
+&gt;       RequestBase().request_base(baseinfo,testdata)
+
+testcase\Invoice_Upload\test_invoice_upload.py:13: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+utils\request_control.py:150: in request_base
+    raise e
+utils\request_control.py:141: in request_base
+    raise js
+utils\request_control.py:130: in request_base
+    result_json = json.loads(result.text)
+C:\Users\yn\AppData\Local\Programs\Python\Python312\Lib\json\__init__.py:346: in loads
+    return _default_decoder.decode(s)
+C:\Users\yn\AppData\Local\Programs\Python\Python312\Lib\json\decoder.py:337: in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;json.decoder.JSONDecoder object at 0x000002432F442AE0&gt;, s = '', idx = 0
+
+    def raw_decode(self, s, idx=0):
+        """Decode a JSON document from ``s`` (a ``str`` beginning with
+        a JSON document) and return a 2-tuple of the Python
+        representation and the index in ``s`` where the document ended.
+    
+        This can be used to decode a JSON document from a string that may
+        have extraneous data at the end.
+    
+        """
+        try:
+            obj, end = self.scan_once(s, idx)
+        except StopIteration as err:
+&gt;           raise JSONDecodeError("Expecting value", s, err.value) from None
+E           json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+
+C:\Users\yn\AppData\Local\Programs\Python\Python312\Lib\json\decoder.py:355: JSONDecodeError</failure></testcase><testcase classname="testcase.Smoking_Process.test_smoking_process.TestSmokingProcess" name="test_smoking_process[baseinfo0-testdata0]" time="0.472" /><testcase classname="testcase.Smoking_Process.test_smoking_process.TestSmokingProcess" name="test_smoking_process[baseinfo1-testdata1]" time="0.830" /><testcase classname="testcase.Smoking_Process.test_smoking_process.TestSmokingProcess" name="test_smoking_process[baseinfo2-testdata2]" time="0.231" /><testcase classname="testcase.Smoking_Process.test_smoking_process.TestSmokingProcess" name="test_smoking_process[baseinfo3-testdata3]" time="0.395" /><testcase classname="testcase.Upload_File.test_upload_file.TestUploadFile" name="test_upload_file[baseinfo0-testdata0]" time="0.318" /><testcase classname="testcase.Upload_File.test_upload_file.TestUploadFile" name="test_upload_file[baseinfo1-testdata1]" time="0.767" /></testsuite></testsuites>
